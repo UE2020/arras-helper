@@ -1,29 +1,26 @@
-use std::env;
-
 //use futures::{future, pin_mut, StreamExt};
+use log::{debug, info, trace, warn};
 
-use async_std::io;
-use async_std::prelude::*;
 use async_std::task;
-use async_tungstenite::async_std::connect_async;
-use async_tungstenite::tungstenite::protocol::Message;
-use futures::SinkExt;
-use futures::StreamExt;
 
-mod fasttalk;
-mod captcha;
+mod bot;
+pub mod captcha;
+pub mod fasttalk;
+pub mod protocol;
 
 async fn run() {
-    println!("arrasbot: Connecting...");
-    let ( mut ws_stream, _) = connect_async("ws://echo.websocket.org")
-        .await
-        .expect("Failed to connect");
-    // test
-    ws_stream.send(Message::Binary(fasttalk::encode(vec![fasttalk::Block::String(String::from("Hello"))]))).await;
-    println!("Recv {:?}", ws_stream.next().await.unwrap().unwrap().into_data());
-    println!("arrasbot: WebSocket handshake has been successfully completed");
+    info!("Initializing bot");
+    let mut bot = bot::Bot::connect(
+        "wss://ak7oqfc2u4qqcu6i.d.nsrv.cloud:5002/?a=1".to_owned(),
+        "Aspect".to_owned(),
+    )
+    .await;
+    info!("Bot is ready");
+    // listen for events
 }
 
 fn main() {
+    env_logger::init();
+
     task::block_on(run())
 }

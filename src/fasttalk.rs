@@ -296,7 +296,7 @@ pub fn decode(packet: Vec<u8>) -> Option<Vec<Block>> {
     let mut consumedHalf = true;
     loop {
         if index >= data.len() {
-            return None
+            return None;
         }
         let mut typeCode = data[index];
 
@@ -314,7 +314,6 @@ pub fn decode(packet: Vec<u8>) -> Option<Vec<Block>> {
                     index += 1;
                 }
                 break; // TODO: is this sound?
-
             }
             let mut repeat = typeCode - 10;
             if typeCode == 0b1110 {
@@ -416,7 +415,9 @@ pub fn decode(packet: Vec<u8>) -> Option<Vec<Block>> {
                 index += 1;
                 buffer[3] = data[idx];
 
-                output.push(Block::Number((i32::from_le_bytes(buffer) - 0x100000000) as f64));
+                output.push(Block::Number(
+                    (i32::from_le_bytes(buffer) - 0x100000000) as f64,
+                ));
             }
             0b1000 => {
                 let mut buffer: [u8; 4] = [0, 0, 0, 0];
@@ -443,7 +444,9 @@ pub fn decode(packet: Vec<u8>) -> Option<Vec<Block>> {
                 if byte == 0 {
                     output.push(Block::String(String::from("")));
                 } else {
-                    output.push(Block::String(std::char::from_u32(byte as u32).unwrap().to_string()));
+                    output.push(Block::String(
+                        std::char::from_u32(byte as u32).unwrap().to_string(),
+                    ));
                 }
             }
             0b1010 => {
@@ -459,10 +462,10 @@ pub fn decode(packet: Vec<u8>) -> Option<Vec<Block>> {
                     }
                     let chara = match std::char::from_u32(byte as u32) {
                         Some(c) => c,
-                        None => continue
+                        None => continue,
                     };
                     if chara == '\u{0}' {
-                        break
+                        break;
                     }
                     string += &chara.to_string();
                 }
@@ -474,7 +477,8 @@ pub fn decode(packet: Vec<u8>) -> Option<Vec<Block>> {
                 loop {
                     let idx = index;
                     index += 1;
-                    if data[idx] == '\u{0}' as u8 { // Found NUL
+                    if data[idx] == '\u{0}' as u8 {
+                        // Found NUL
                         break;
                     }
                     let mut byte_pair = [data[idx], 0];
@@ -488,7 +492,7 @@ pub fn decode(packet: Vec<u8>) -> Option<Vec<Block>> {
                 output.push(Block::String(string.to_owned()));
                 index += 1;
             }
-            _ => ()
+            _ => (),
         }
     }
 

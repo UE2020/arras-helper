@@ -9,6 +9,13 @@ edition = "2018"
 [dependencies]
 futures = "*"
 async-std = "*"
-async-tungstenite = { version = "*", features = ["async-std-runtime"] }
+async-tungstenite = "0.2.1"
 serde_json = "*"
 thirtyfour_sync = "*"
+env_logger = "*"
+log = "*"
+rustls = { version = "0.16", features=["dangerous_configuration"]}
+async-tls = "0.6"
+webpki = "0.21.0"
+tungstenite = "0.9.2"
+url = "*"

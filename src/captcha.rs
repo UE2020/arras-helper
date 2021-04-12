@@ -39,10 +39,10 @@ pub fn make_keys() -> Vec<String> {
     let driver =
         WebDriver::new("http://localhost:4444", &caps).expect("Failed to create webdriver");
 
-    // Navigate to https://moomoo.io.
+    // Navigate to https://arras.io.
     driver
-        .get("https://moomoo.io")
-        .expect("Failed to navigate to moomoo");
+        .get("https://arras.io")
+        .expect("Failed to navigate to arras");
 
     let ret = driver.execute_script(r#"
        async function mkkey() {

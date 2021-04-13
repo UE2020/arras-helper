@@ -34,7 +34,11 @@ pub fn encode_outbound(data: Outbound) -> Vec<u8> {
 }
 
 mod packet_ids {
+    // outbound
     pub const SPAWN: &str = "s";
     pub const PING: &str = "p";
     pub const TYPE: &str = "T";
+
+    // inbound
+    pub const WELCOME: &str = "w";
 }

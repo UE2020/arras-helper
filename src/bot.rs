@@ -49,14 +49,13 @@ where
 
     request.add_header(
         std::borrow::Cow::from("origin"),
-        std::borrow::Cow::from("https://moomoo.io"),
+        std::borrow::Cow::from("https://arras.io"),
     );
     async_tungstenite::connect_async_with_tls_connector(request, Some(connector)).await
 }
 
 pub struct Bot {
-    pub socket: WebSocketStream<MaybeTlsStream<TcpStream>>,
-    recaptcha_code: String,
+    pub socket: WebSocketStream<MaybeTlsStream<TcpStream>>
 }
 
 impl Bot {
@@ -67,6 +66,30 @@ impl Bot {
         let mut client = connect_tls_disable_cert_verification(url).await.unwrap().0;
         client
             .send(Message::Binary(protocol::encode_outbound(
+                protocol::Outbound::Ping(1),
+            )))
+            .await
+            .unwrap();
+        client
+            .send(Message::Binary(protocol::encode_outbound(
+                protocol::Outbound::D(1),
+            )))
+            .await
+            .unwrap();
+        client
+            .send(Message::Binary(protocol::encode_outbound(
+                protocol::Outbound::Type(String::from("{\"type\":\"headless\"}")),
+            )))
+            .await
+            .unwrap();
+        client
+            .send(Message::Binary(protocol::encode_outbound(
+                protocol::Outbound::K,
+            )))
+            .await
+            .unwrap();
+        client
+            .send(Message::Binary(protocol::encode_outbound(
                 protocol::Outbound::Spawn {
                     name,
                     captcha: recaptcha_code,
@@ -75,8 +98,7 @@ impl Bot {
             .await
             .unwrap();
         Self {
-            socket: client,
-            recaptcha_code: captcha::make_key(),
+            socket: client
         }
     }
 }

@@ -16,6 +16,7 @@ async fn run() {
     )
     .await;
     info!("Bot is ready");
+    loop {}
     // listen for events
 }
 

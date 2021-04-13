@@ -1,4 +1,5 @@
 #![allow(overflowing_literals)]
+use log::{debug, info, trace, warn};
 #[derive(PartialEq, Clone, Debug)]
 pub enum FasttalkType {
     Bool(bool),
@@ -281,6 +282,7 @@ pub fn encode(message: Vec<Block>) -> Vec<u8> {
             break;
         }
     }
+    debug!("Encoded to {:?}", output);
     output
 }
 

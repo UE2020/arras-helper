@@ -51,6 +51,10 @@ where
         std::borrow::Cow::from("origin"),
         std::borrow::Cow::from("https://arras.io"),
     );
+    
+    request.add_protocol(std::borrow::Cow::from("arras.io#v0+ft2"));
+    request.add_protocol(std::borrow::Cow::from("arras.io#v1+ft2"));
+
     async_tungstenite::connect_async_with_tls_connector(request, Some(connector)).await
 }
 

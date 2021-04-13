@@ -1,4 +1,4 @@
-# arras-socket
+# arras-helper
 Crate for interacting with arras.io
 
 Not complete
